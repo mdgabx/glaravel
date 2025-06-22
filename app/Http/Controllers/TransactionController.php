@@ -9,7 +9,8 @@ class TransactionController extends Controller
     //
     public function index(): string
     {
-        return 'Transaction page';
+        return route('transaction', ['transactionId' => 5]);
+        //return 'Transaction page';
     }
 
     public function show(int $transactionId): string

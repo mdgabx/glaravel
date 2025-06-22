@@ -38,11 +38,17 @@ use Illuminate\Support\Facades\Route;
 //     return $tid . " - " . $fid;
 // });
 
-Route::get('/transactions', [TransactionController::class, 'index']);
-Route::get('/transactions/{transactionId}', [TransactionController::class, 'show'])->whereNumber('transactionId');
-Route::get('/transactions/create', [TransactionController::class, 'create']);
-Route::post('/transactions', [TransactionController::class, 'store']);
+Route::prefix('transactions')->group(function () {
+    Route::controller(TransactionController::class)->group(function () {
+        Route::get('/', 'index')->name('transactions');
+        Route::get('/{transactionId}',  'show')->whereNumber('transactionId')->name('transaction');
+        Route::get('/create', 'create');
+        Route::post('/', 'store');
+    });
+
+
+    Route::get('/{transactionId}/process', ProcessTransactionController::class);
+});
 
 // Route::get('/transactions/{transactionId}/process', [ProcessTransactionController::class, '__invoke']); 
 // or
-Route::get('/transactions/{transactionId}/process', ProcessTransactionController::class); 
